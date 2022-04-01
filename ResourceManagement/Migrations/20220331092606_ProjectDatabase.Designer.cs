@@ -12,7 +12,7 @@ using ResourceManagement.Database;
 namespace ResourceManagement.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220328042429_ProjectDatabase")]
+    [Migration("20220331092606_ProjectDatabase")]
     partial class ProjectDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,8 +26,9 @@ namespace ResourceManagement.Migrations
 
             modelBuilder.Entity("ResourceManagement.Models.Department", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -45,8 +46,9 @@ namespace ResourceManagement.Migrations
 
             modelBuilder.Entity("ResourceManagement.Models.Position", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -66,8 +68,9 @@ namespace ResourceManagement.Migrations
 
             modelBuilder.Entity("ResourceManagement.Models.Resource", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -82,22 +85,25 @@ namespace ResourceManagement.Migrations
 
                     b.Property<string>("PositionId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PositionId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PositionId");
+                    b.HasIndex("PositionId1");
 
                     b.ToTable("Resources");
                 });
 
             modelBuilder.Entity("ResourceManagement.Models.Responsibility", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Guid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Guid"), 1L, 1);
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -108,15 +114,16 @@ namespace ResourceManagement.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("Responsibilities");
                 });
 
             modelBuilder.Entity("ResourceManagement.Models.WorkGroup", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -136,11 +143,11 @@ namespace ResourceManagement.Migrations
 
             modelBuilder.Entity("ResourceManagement.Models.WorkGroupResource", b =>
                 {
-                    b.Property<string>("WorkGroupId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("WorkGroupId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ResourceId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("WorkGroupId", "ResourceId");
 
@@ -151,8 +158,9 @@ namespace ResourceManagement.Migrations
 
             modelBuilder.Entity("ResourceManagement.Models.Working", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -170,29 +178,35 @@ namespace ResourceManagement.Migrations
 
                     b.Property<string>("ResourceId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ResourceId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ResponsibilityGuid")
+                        .HasColumnType("int");
 
                     b.Property<string>("ResponsibilityId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ResponsibilityId1")
-                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("StartAt")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("WorkGroupId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("WorkGroupId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ResourceId");
+                    b.HasIndex("ResourceId1");
 
-                    b.HasIndex("ResponsibilityId1");
+                    b.HasIndex("ResponsibilityGuid");
 
-                    b.HasIndex("WorkGroupId");
+                    b.HasIndex("WorkGroupId1");
 
                     b.ToTable("Workings");
                 });
@@ -201,7 +215,7 @@ namespace ResourceManagement.Migrations
                 {
                     b.HasOne("ResourceManagement.Models.Position", "Position")
                         .WithMany("Resources")
-                        .HasForeignKey("PositionId")
+                        .HasForeignKey("PositionId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -231,19 +245,19 @@ namespace ResourceManagement.Migrations
                 {
                     b.HasOne("ResourceManagement.Models.Resource", "Resource")
                         .WithMany("Workings")
-                        .HasForeignKey("ResourceId")
+                        .HasForeignKey("ResourceId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ResourceManagement.Models.Responsibility", "Responsibility")
                         .WithMany()
-                        .HasForeignKey("ResponsibilityId1")
+                        .HasForeignKey("ResponsibilityGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ResourceManagement.Models.WorkGroup", "WorkGroup")
                         .WithMany()
-                        .HasForeignKey("WorkGroupId")
+                        .HasForeignKey("WorkGroupId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -13,7 +13,7 @@ namespace ResourceManagement.Migrations
                 name: "Departments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -27,7 +27,7 @@ namespace ResourceManagement.Migrations
                 name: "Positions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -41,7 +41,7 @@ namespace ResourceManagement.Migrations
                 name: "Responsibilities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Guid = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -49,14 +49,14 @@ namespace ResourceManagement.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Responsibilities", x => x.Id);
+                    table.PrimaryKey("PK_Responsibilities", x => x.Guid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "WorkGroups",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -70,18 +70,19 @@ namespace ResourceManagement.Migrations
                 name: "Resources",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PositionId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    PositionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PositionId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Resources", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Resources_Positions_PositionId",
-                        column: x => x.PositionId,
+                        name: "FK_Resources_Positions_PositionId1",
+                        column: x => x.PositionId1,
                         principalTable: "Positions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -91,8 +92,8 @@ namespace ResourceManagement.Migrations
                 name: "WorkGroupResources",
                 columns: table => new
                 {
-                    ResourceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    WorkGroupId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ResourceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WorkGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,44 +116,46 @@ namespace ResourceManagement.Migrations
                 name: "Workings",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     EndAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ResourceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    WorkGroupId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ResourceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ResourceId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WorkGroupId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WorkGroupId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ResponsibilityId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResponsibilityId1 = table.Column<int>(type: "int", nullable: false)
+                    ResponsibilityGuid = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Workings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Workings_Resources_ResourceId",
-                        column: x => x.ResourceId,
+                        name: "FK_Workings_Resources_ResourceId1",
+                        column: x => x.ResourceId1,
                         principalTable: "Resources",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Workings_Responsibilities_ResponsibilityId1",
-                        column: x => x.ResponsibilityId1,
+                        name: "FK_Workings_Responsibilities_ResponsibilityGuid",
+                        column: x => x.ResponsibilityGuid,
                         principalTable: "Responsibilities",
-                        principalColumn: "Id",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Workings_WorkGroups_WorkGroupId",
-                        column: x => x.WorkGroupId,
+                        name: "FK_Workings_WorkGroups_WorkGroupId1",
+                        column: x => x.WorkGroupId1,
                         principalTable: "WorkGroups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Resources_PositionId",
+                name: "IX_Resources_PositionId1",
                 table: "Resources",
-                column: "PositionId");
+                column: "PositionId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkGroupResources_ResourceId",
@@ -160,19 +163,19 @@ namespace ResourceManagement.Migrations
                 column: "ResourceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Workings_ResourceId",
+                name: "IX_Workings_ResourceId1",
                 table: "Workings",
-                column: "ResourceId");
+                column: "ResourceId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Workings_ResponsibilityId1",
+                name: "IX_Workings_ResponsibilityGuid",
                 table: "Workings",
-                column: "ResponsibilityId1");
+                column: "ResponsibilityGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Workings_WorkGroupId",
+                name: "IX_Workings_WorkGroupId1",
                 table: "Workings",
-                column: "WorkGroupId");
+                column: "WorkGroupId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -1,10 +1,9 @@
-﻿namespace ResourceManagement.Models
+﻿namespace ResourceManagement.Response
 {
-    public class Department
+    public class DepartmentResponse
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public DateTime CreateAt { get; set; }
     }
 }
