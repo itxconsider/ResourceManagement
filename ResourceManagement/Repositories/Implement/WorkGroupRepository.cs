@@ -8,32 +8,32 @@ using ResourceManagement.Response;
 
 namespace ResourceManagement.Repositories.Implement
 {
-    public class ResourceReposity : IResourceService
+    public class WorkGroupRepository : IWorkGroupService
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public ResourceReposity(DataContext context, IMapper mapper)
+        public WorkGroupRepository(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<string> AddUpdate(ResourceRequest request)
+        public async Task<string> AddUpdate(WorkGroupRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-            var department = _mapper.Map<Resource>(request);
-            if (department.Id.Equals(Guid.Empty))
+            var workGroup = _mapper.Map<WorkGroup>(request);
+            if (workGroup.Id.Equals(Guid.Empty))
             {
-                await _context.Resources.AddAsync(department);
+                await _context.WorkGroups.AddAsync(workGroup);
                 await _context.SaveChangesAsync();
                 return "record has been added.";
             }
-            else 
+            else
             {
-                var data = await _context.Resources.FindAsync(department.Id);
-                if (data != null) throw new NotFoundException(string.Format($"record not found for {nameof(department)}"));
-                _context.Resources.Update(department);
+                var data = await _context.WorkGroups.FindAsync(workGroup.Id);
+                if (data != null) throw new NotFoundException(string.Format($"record not found for {nameof(workGroup)}"));
+                _context.WorkGroups.Update(workGroup);
                 await _context.SaveChangesAsync();
                 return "record has been updated.";
             }
@@ -42,31 +42,30 @@ namespace ResourceManagement.Repositories.Implement
         public async void Delete(Guid id)
         {
             if (id.Equals(Guid.Empty)) throw new ArgumentNullException(nameof(id));
-            var dep = await _context.Resources.FindAsync(id);
+            var dep = _context.Departments.Find(id);
             if (dep != null)
             {
-                _context.Resources.Remove(dep);
+                _context.Departments.Remove(dep);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task<ResourceResponse?> Get(Guid id)
+        public async Task<WorkGroupResponse?> Get(Guid id)
         {
             if (id.Equals(Guid.Empty)) throw new ArgumentNullException(nameof(id));
-            var res = await _context.Resources.FindAsync(id);
-            if (res != null)
+            var workGroup = await _context.WorkGroups.FindAsync(id);
+            if (workGroup != null)
             {
-                var data = _mapper.Map<ResourceResponse?>(res);
-                return data;
+                var map = _mapper.Map<WorkGroupResponse?>(workGroup);
+                return map;
             }
             return null;
-        
         }
 
-        public async Task<List<ResourceResponse>> GetAll()
+        public async Task<List<WorkGroupResponse>> GetAll()
         {
-            var dep = await _context.Resources.ToListAsync();
-            var map = _mapper.Map<List<ResourceResponse>>(dep);
+            var workGroup = await _context.WorkGroups.ToListAsync();
+            var map = _mapper.Map<List<WorkGroupResponse>>(workGroup);
             return map;
         }
     }

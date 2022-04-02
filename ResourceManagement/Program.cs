@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ResourceManagement.EndpiontDefinitions;
+using ResourceManagement.Endpionts;
 using ResourceManagement.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

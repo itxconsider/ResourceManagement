@@ -3,9 +3,9 @@ using ResourceManagement.Repositories.Implement;
 using ResourceManagement.Repositories.Interface;
 using ResourceManagement.Request;
 
-namespace ResourceManagement.EndpiontDefinitions
+namespace ResourceManagement.Endpionts
 {
-    public class DepartmentEndpointDefinition : IEndpointDefinition
+    public class DepartmentEndpoints : IEndpointDefinition
     {
         public void DefineEndtpoints(WebApplication app)
         {

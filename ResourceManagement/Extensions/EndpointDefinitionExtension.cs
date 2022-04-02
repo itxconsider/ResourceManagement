@@ -1,4 +1,4 @@
-﻿using ResourceManagement.EndpiontDefinitions;
+﻿using ResourceManagement.Endpionts;
 
 namespace ResourceManagement.Extensions
 {

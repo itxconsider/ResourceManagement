@@ -48,8 +48,7 @@ namespace ResourceManagement.Repositories.Implement
             {
                 _context.Departments.Remove(dep);
                 await _context.SaveChangesAsync();               
-            }
-           
+            }           
         }
 
         public async Task<DepartmentResponse?> Get(Guid id)

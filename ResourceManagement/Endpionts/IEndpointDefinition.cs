@@ -1,4 +1,4 @@
-﻿namespace ResourceManagement.EndpiontDefinitions
+﻿namespace ResourceManagement.Endpionts
 {
     public interface IEndpointDefinition
     {

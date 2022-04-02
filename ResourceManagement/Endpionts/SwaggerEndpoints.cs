@@ -1,11 +1,10 @@
-﻿namespace ResourceManagement.EndpiontDefinitions
+﻿namespace ResourceManagement.Endpionts
 {
-    public class SwaggerEndpointDefinition : IEndpointDefinition
+    public class SwaggerEndpoints : IEndpointDefinition
     {
         public void DefineEndtpoints(WebApplication app)
         {
-            // Configure the HTTP request pipeline.
-           
+            // Configure the HTTP request pipeline.           
              app.UseSwagger();    
              app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Resource Managment"));
         }

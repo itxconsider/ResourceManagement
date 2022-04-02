@@ -3,11 +3,11 @@ using ResourceManagement.Response;
 
 namespace ResourceManagement.Repositories.Interface
 {
-    public interface IResource
+    public interface IResourceService
     {
-        Task<ResourceResponse> Get(string id);
+        Task<ResourceResponse?> Get(Guid id);
         Task<List<ResourceResponse>> GetAll();
         Task<string> AddUpdate(ResourceRequest request);
-        void Delete(string id);
+        void Delete(Guid id);
     }
 }

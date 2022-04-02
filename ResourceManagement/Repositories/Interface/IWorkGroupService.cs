@@ -3,11 +3,11 @@ using ResourceManagement.Response;
 
 namespace ResourceManagement.Repositories.Interface
 {
-    public interface IWorkGroup
+    public interface IWorkGroupService
     {
-        Task<WorkGroupResponse> Get(string id);
+        Task<WorkGroupResponse?> Get(Guid id);
         Task<List<WorkGroupResponse>> GetAll();
         Task<string> AddUpdate(WorkGroupRequest request);
-        void Delete(string id);
+        void Delete(Guid id);
     }
 }
