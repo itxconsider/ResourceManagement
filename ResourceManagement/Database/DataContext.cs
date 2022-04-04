@@ -12,7 +12,7 @@ namespace ResourceManagement.Database
         public DbSet<WorkGroup> WorkGroups { get; set; }
         public DbSet<Responsibility> Responsibilities { get; set; }
         public DbSet<WorkGroupResource> WorkGroupResources { get; set; }
-        public DbSet<Working> Workings { get; set; }
+        public DbSet<Work> Works { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

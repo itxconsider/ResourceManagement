@@ -9,8 +9,8 @@ namespace ResourceManagement.Mappers
     {
         public WorkProfile()
         {
-            CreateMap<WorkResponse, Working>().ReverseMap();
-            CreateMap<WorkRequest, Working>().ReverseMap();
+            CreateMap<WorkResponse, Work>().ReverseMap();
+            CreateMap<WorkRequest, Work>().ReverseMap();
         }
     }
 }

@@ -3,11 +3,11 @@ using ResourceManagement.Response;
 
 namespace ResourceManagement.Repositories.Interface
 {
-    public interface IPosition
+    public interface IPositionService
     {
         Task<PositionResponse> Get(Guid id);
         Task<List<PositionResponse>> GetAll();
         Task<string> AddUpdate(PositionRequest request);
-        void Delete(string id);
+        void Delete(Guid id);
     }
 }

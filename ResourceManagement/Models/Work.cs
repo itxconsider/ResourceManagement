@@ -1,6 +1,6 @@
 ﻿namespace ResourceManagement.Models
 {
-    public class Working
+    public class Work
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

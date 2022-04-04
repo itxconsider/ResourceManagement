@@ -8,7 +8,7 @@ using ResourceManagement.Response;
 
 namespace ResourceManagement.Repositories.Implement
 {
-    public class DepartmentRepository : IDepartment
+    public class DepartmentRepository : IDepartmentService
     {
 
         public DataContext _context;

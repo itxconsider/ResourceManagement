@@ -3,7 +3,7 @@ using ResourceManagement.Response;
 
 namespace ResourceManagement.Repositories.Interface
 {
-    public interface IDepartment
+    public interface IDepartmentService
     {
         Task<DepartmentResponse?> Get(Guid id);
         Task<List<DepartmentResponse>> GetAll();
