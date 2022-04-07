@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ResourceManagement.Contracts;
 
 namespace ResourceManagement.Models
 {

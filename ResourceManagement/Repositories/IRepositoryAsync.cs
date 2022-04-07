@@ -1,4 +1,4 @@
-﻿using ResourceManagement.Models;
+﻿using ResourceManagement.Contracts;
 
 namespace ResourceManagement.Repositories
 {

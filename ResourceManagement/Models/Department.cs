@@ -1,4 +1,6 @@
-﻿namespace ResourceManagement.Models
+﻿using ResourceManagement.Contracts;
+
+namespace ResourceManagement.Models
 {
     public class Department : AuditableEntity<Guid>
     {

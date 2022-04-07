@@ -2,9 +2,9 @@
 
 namespace ResourceManagement.Repositories
 {
-    public interface IUnitOfWork<TId> : IDisposable
+    public interface IExtendedAttributeUnitOfWork<TId, TEntityId, TEntity> : IDisposable where TEntity : AuditableEntity<TEntityId>
     {
-        IRepositoryAsync<T, TId> Repository<T>() where T : AuditableEntity<TId>;
+        IRepositoryAsync<T, TId> Repository<T>() where T : AuditableEntityExtendedAttribute<TId, TEntityId, TEntity>;
 
         Task<int> Commit(CancellationToken cancellationToken);
 

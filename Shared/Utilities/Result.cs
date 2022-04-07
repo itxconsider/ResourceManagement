@@ -119,7 +119,7 @@
             return new Result<T> { IsSuccess = true, Data = data, Messages = messages };
         }
 
-        public new static Task<Result<T>> SuccessAsync()
+        public static Task<Result<T>> SuccessAsync()
         {
             return Task.FromResult(Success());
         }

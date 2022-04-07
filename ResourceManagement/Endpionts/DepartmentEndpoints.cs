@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using ResourceManagement.Features.Departments.Queries;
 using ResourceManagement.Repositories.Implement;
 using ResourceManagement.Repositories.Interface;
 using Shared.Models.Request;
@@ -15,7 +17,10 @@ namespace ResourceManagement.Endpionts
                 return dep is not null ? Results.Ok(dep) : Results.NotFound($"record not found for {nameof(id)}");
             });
 
-            app.MapGet("/departments", ([FromServices] IDepartmentService repo) => repo.GetAll());
+            app.MapGet("/departments", async ([FromServices] IDepartmentService repo, [FromQuery] int page, [FromQuery] int size, [FromQuery] string? search) =>
+            {
+                return Results.Ok(await repo.GetAll(page,size,search,""));
+            });
 
             app.MapPost("/department", ([FromServices] IDepartmentService repo, [FromBody] DepartmentRequest department) =>
             {

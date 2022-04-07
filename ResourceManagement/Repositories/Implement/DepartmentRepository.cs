@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 using ResourceManagement.Database;
-using ResourceManagement.Extensions;
+using ResourceManagement.Features.Departments.Queries;
 using ResourceManagement.Models;
 using ResourceManagement.Repositories.Interface;
 using Shared.Models.Request;
@@ -15,13 +15,15 @@ namespace ResourceManagement.Repositories.Implement
 
         public DataContext _context;
         public IMapper _mapper;
+        private IMediator _mediator;
 
-        public DepartmentRepository(DataContext context, IMapper mapper)
+        public DepartmentRepository(DataContext context, IMapper mapper, IMediator mediator)
         {
             _context = context;
             _mapper = mapper;
-        }      
-     
+            _mediator = mediator;
+        }
+
         public async Task<IResult<DepartmentResponse>> AddUpdate(DepartmentRequest request)
         {
             if(request == null) throw new ArgumentNullException(nameof(request));
@@ -65,12 +67,9 @@ namespace ResourceManagement.Repositories.Implement
             return await Result<DepartmentResponse>.FailAsync("record not found.");           
         }
 
-        public async Task<PaginatedResult<DepartmentResponse>> GetAll()
+        public async Task<PaginatedResult<DepartmentResponse>> GetAll(int pageNumber, int pageSize, string searchString, string? orderBy = null)
         {
-            var dep = await _context.Departments.ToListAsync();
-
-            var map = _mapper.Map<List<DepartmentResponse>>(dep) as IQueryable<DepartmentResponse>;
-            return  await map.ToPaginatedListAsync(10,1);
+            return await _mediator.Send(new GetAllDepartmentQuery(pageNumber, pageSize, searchString, searchString));
         }
     }
 }

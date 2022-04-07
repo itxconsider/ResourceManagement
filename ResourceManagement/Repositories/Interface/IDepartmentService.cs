@@ -7,7 +7,7 @@ namespace ResourceManagement.Repositories.Interface
     public interface IDepartmentService
     {
         Task<IResult<DepartmentResponse>> Get(Guid id);
-        Task<PaginatedResult<DepartmentResponse>> GetAll();
+        Task<PaginatedResult<DepartmentResponse>> GetAll(int pageNumber, int pageSize, string? searchString = null, string? orderBy = null);
         Task<IResult<DepartmentResponse>> AddUpdate(DepartmentRequest request);
         void Delete(Guid id);
     }

@@ -1,10 +1,13 @@
-﻿namespace ResourceManagement.Models
+﻿namespace ResourceManagement.Contracts
 {
     public interface IAuditableEntity<TId> : IAuditableEntity, IEntity<TId>
     {
     }
+
     public interface IAuditableEntity : IEntity
     {
-        public DateTime CreateAt { get; set; }
+        string CreatedBy { get; set; }
+
+        DateTime CreatedAt { get; set; }
     }
 }

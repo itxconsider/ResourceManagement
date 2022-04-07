@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ResourceManagement.Contracts;
 using ResourceManagement.Database;
 using ResourceManagement.Models;
 

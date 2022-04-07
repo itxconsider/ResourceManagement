@@ -1,9 +1,10 @@
-﻿namespace ResourceManagement.Models
+﻿namespace  ResourceManagement.Contracts
 {
-    public interface IEntity<TId> : IEntity 
+    public interface IEntity<TId> : IEntity
     {
         public TId Id { get; set; }
     }
+
     public interface IEntity
     {
     }
