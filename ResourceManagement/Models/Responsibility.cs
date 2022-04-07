@@ -2,12 +2,9 @@
 
 namespace ResourceManagement.Models
 {
-    public class Responsibility
+    public class Responsibility : AuditableEntity<Guid>
     {
-        [Key]
-        public int Guid { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-        public DateTime CreateAt { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

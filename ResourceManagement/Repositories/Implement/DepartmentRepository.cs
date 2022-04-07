@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ResourceManagement.Database;
+using ResourceManagement.Extensions;
 using ResourceManagement.Models;
 using ResourceManagement.Repositories.Interface;
-using ResourceManagement.Request;
-using ResourceManagement.Response;
+using Shared.Models.Request;
+using Shared.Models.Response;
+using Shared.Utilities;
 
 namespace ResourceManagement.Repositories.Implement
 {
@@ -20,7 +22,7 @@ namespace ResourceManagement.Repositories.Implement
             _mapper = mapper;
         }      
      
-        public async Task<string> AddUpdate(DepartmentRequest request)
+        public async Task<IResult<DepartmentResponse>> AddUpdate(DepartmentRequest request)
         {
             if(request == null) throw new ArgumentNullException(nameof(request));
             var department = _mapper.Map<Department>(request);
@@ -28,7 +30,7 @@ namespace ResourceManagement.Repositories.Implement
             {
                 await _context.Departments.AddAsync(department);
                 await _context.SaveChangesAsync();
-                return "record has been added.";
+                return await Result<DepartmentResponse>.SuccessAsync("record has been added."); 
             }
             else
             {
@@ -36,7 +38,7 @@ namespace ResourceManagement.Repositories.Implement
                 if (data != null) throw new NotFoundException(string.Format($"record not found for {nameof(department)}"));
                 _context.Departments.Update(department);
                 await _context.SaveChangesAsync();
-                return "record has been updated.";
+                return await Result<DepartmentResponse>.SuccessAsync("record has been .");
             }
         }
 
@@ -51,23 +53,24 @@ namespace ResourceManagement.Repositories.Implement
             }           
         }
 
-        public async Task<DepartmentResponse?> Get(Guid id)
+        public async Task<IResult<DepartmentResponse>> Get(Guid id)
         {
             if(id.Equals(Guid.Empty)) throw new ArgumentNullException(nameof(id));
             var dep = await _context.Departments.FindAsync(id);
             if(dep != null)
             {
                 var map = _mapper.Map<DepartmentResponse>(dep);
-                return map;
+                return await Result<DepartmentResponse>.SuccessAsync(map,"");
             }
-            return null;            
+            return await Result<DepartmentResponse>.FailAsync("record not found.");           
         }
 
-        public async Task<List<DepartmentResponse>> GetAll()
+        public async Task<PaginatedResult<DepartmentResponse>> GetAll()
         {
             var dep = await _context.Departments.ToListAsync();
-            var map = _mapper.Map<List<DepartmentResponse>>(dep);
-            return map;
+
+            var map = _mapper.Map<List<DepartmentResponse>>(dep) as IQueryable<DepartmentResponse>;
+            return  await map.ToPaginatedListAsync(10,1);
         }
     }
 }

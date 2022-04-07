@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ResourceManagement.Models;
-using ResourceManagement.Request;
-using ResourceManagement.Response;
+using Shared.Models.Request;
+using Shared.Models.Response;
 
 namespace ResourceManagement.Mappers
 {

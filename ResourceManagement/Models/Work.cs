@@ -1,13 +1,11 @@
 ﻿namespace ResourceManagement.Models
 {
-    public class Work
+    public class Work : AuditableEntity<Guid>
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public DateTimeOffset StartAt { get; set; }
         public DateTimeOffset EndAt { get; set; }
         public string Description { get; set; }
-        public DateTime CreateAt { get; set; }
         public string ResourceId { get; set; }
         public Resource Resource { get; set; }
         public string WorkGroupId { get; set; }

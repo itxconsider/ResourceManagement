@@ -1,7 +1,7 @@
 ﻿using ResourceManagement.Repositories.Implement;
 using ResourceManagement.Repositories.Interface;
-using ResourceManagement.Request;
-using ResourceManagement.Response;
+using Shared.Models.Request;
+using Shared.Models.Response;
 
 namespace ResourceManagement.Endpionts
 {
