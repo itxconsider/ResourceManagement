@@ -16,7 +16,7 @@ namespace ResourceManagement.Endpionts
             app.MapDelete("/resource{id}", DeleteResource);
         }
 
-        private IResult GetResource(IResourceService service,Guid id)
+        internal IResult GetResource(IResourceService service,Guid id)
         {
             var resource = service.Get(id);
             return resource is not null ? Results.Ok(resource) : Results.NotFound();

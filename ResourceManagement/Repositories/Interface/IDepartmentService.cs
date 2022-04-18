@@ -9,6 +9,6 @@ namespace ResourceManagement.Repositories.Interface
         Task<IResult<DepartmentResponse>> Get(Guid id);
         Task<PaginatedResult<DepartmentResponse>> GetAll(int pageNumber, int pageSize, string? searchString = null, string? orderBy = null);
         Task<IResult<DepartmentResponse>> AddUpdate(DepartmentRequest request);
-        void Delete(Guid id);
+        Task<IResult<Guid>> Delete(Guid id);
     }
 }

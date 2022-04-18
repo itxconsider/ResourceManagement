@@ -1,7 +1,6 @@
 ﻿using LazyCache;
 using ResourceManagement.Contracts;
 using ResourceManagement.Database;
-using ResourceManagement.Models;
 using System.Collections;
 
 namespace ResourceManagement.Repositories
@@ -38,12 +37,12 @@ namespace ResourceManagement.Repositories
             return (IRepositoryAsync<TEntity, TId>)_repositories[type];
         }
 
-        public async Task<int> Commit(CancellationToken cancellationToken)
+        public async Task<int> CommitAsync(CancellationToken cancellationToken)
         {
             return await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> CommitAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys)
+        public async Task<int> CommitAndRemoveCacheAsync(CancellationToken cancellationToken, params string[] cacheKeys)
         {
             var result = await _dbContext.SaveChangesAsync(cancellationToken);
             foreach (var cacheKey in cacheKeys)
@@ -77,6 +76,11 @@ namespace ResourceManagement.Repositories
             }
             //dispose unmanaged resources
             disposed = true;
+        }
+
+        public void Commit()
+        {
+           _dbContext.SaveChanges();
         }
     }
 }

@@ -6,9 +6,11 @@ namespace ResourceManagement.Repositories
     {
         IRepositoryAsync<T, TId> Repository<T>() where T : AuditableEntity<TId>;
 
-        Task<int> Commit(CancellationToken cancellationToken);
+        void Commit();
 
-        Task<int> CommitAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys);
+        Task<int> CommitAsync(CancellationToken cancellationToken);
+
+        Task<int> CommitAndRemoveCacheAsync(CancellationToken cancellationToken, params string[] cacheKeys);
 
         Task Rollback();
     }

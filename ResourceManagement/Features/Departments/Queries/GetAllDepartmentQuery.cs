@@ -6,6 +6,7 @@ using ResourceManagement.Specifications.Catalog;
 using Shared.Models.Response;
 using Shared.Utilities;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
 
 namespace ResourceManagement.Features.Departments.Queries
 {
@@ -13,9 +14,9 @@ namespace ResourceManagement.Features.Departments.Queries
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string SearchString { get; set; }
-        public string[] OrderBy { get; set; }
-        public GetAllDepartmentQuery(int pageNumber, int pageSize, string searchString, string orderBy)
+        public string? SearchString { get; set; }
+        public string[]? OrderBy { get; set; }
+        public GetAllDepartmentQuery(int pageNumber, int pageSize, string? searchString, string? orderBy)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;
@@ -45,7 +46,7 @@ namespace ResourceManagement.Features.Departments.Queries
                };
 
                 var filterSpecification = new DepartmentFilterSpecification(request.SearchString);
-                if(request.OrderBy.Any() != true)
+                if(request.OrderBy?.Any() != true)
                 {
                     var data = await _unit.Repository<Department>().Entities
                         .Specify(filterSpecification)
@@ -58,7 +59,7 @@ namespace ResourceManagement.Features.Departments.Queries
                     var ordering = string.Join(",", request.OrderBy); // of the form field name [ascending|descending], ...
                     var data = await _unit.Repository<Department>().Entities
                         .Specify(filterSpecification)
-                        //.OrderBy(ordering) // require system.linq.dynamic.core
+                        .OrderBy(ordering) // require system.linq.dynamic.core
                         .Select(expression)
                         .ToPaginatedListAsync(request.PageNumber, request.PageSize);
                     return data;

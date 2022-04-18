@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ResourceManagement.Features.Departments.Commands;
 using ResourceManagement.Models;
 using Shared.Models.Request;
 using Shared.Models.Response;
@@ -11,6 +12,7 @@ namespace Shared.Models.Mappers
         {
             CreateMap<Department, DepartmentResponse>().ReverseMap();
             CreateMap<Department, DepartmentRequest>().ReverseMap();
+            CreateMap<AddUpdateDepartmentCommand, Department>().ReverseMap();
         }
     }
 }
