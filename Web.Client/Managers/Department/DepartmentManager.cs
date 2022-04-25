@@ -15,10 +15,6 @@ namespace Web.Client.Managers.Department
             _httpClient = httpClient;
         }
 
-        public DepartmentManager()
-        {
-
-        }
         public Task<IResult<Guid>> DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
